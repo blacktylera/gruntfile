@@ -1,0 +1,27 @@
+{
+  "name": "gruntfile",
+  "main": "gruntfile.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/blacktylera/gruntfile",
+  "authors": [
+    "Tyler Black <blacktylera@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "~3.3.1",
+    "firebase": "~2.2.1",
+    "bootstrap-sass": "~3.3.3",
+    "font-awesome": "~4.3.0",
+    "moment": "~2.9.0"
+  },
+  "devDependencies": {
+    "async": "~0.9.2"
+  }
+}

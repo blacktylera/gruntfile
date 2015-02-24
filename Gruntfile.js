@@ -1,34 +1,59 @@
 'use strict';
 
-module.exports = function(grunt) {
-
+module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
-
   grunt.initConfig({
-    clean: ['public'],
+    autoprefixer: {
+      options: {
+        browsers: ['> 1% in US']
+      },
+
+      build: {
+        src: 'public/css/main.css'
+      }
+    },
+    clean: {
+      temp: ['.tmp'],
+      dist: ['public']
+    },
     copy: {
       main: {
         files: [
-          {expand: true, cwd: 'app/', src: ['**', '!**/*.jade', '!**/*.{scss,sass'], dest: 'public/', filter: 'isFile'}]
+          {expand: true, cwd: 'app/', src: ['**', '!**/*.jade', '!**/*.{sass,scss}'], dest: 'public/', filter: 'isFile'}
+        ]
       }
     },
     jade: {
-      compile:{
-        files: [{expand:true, cwd: 'app/',src: ['**/*.jade', '!**/_*.jade'], dest: 'public/', ext: '.html'}]
+      compile: {
+        options: {
+          pretty: true
+        },
+        files: [{expand: true, cwd: 'app/', src: ['**/*.jade', '!**/_*.jade'], dest: 'public/', ext: '.html'}]
       }
     },
     sass: {
       options: {
-          sourceMap: true
+        sourceMap: true
       },
       dist: {
-          files: {
-              'public/css/main.css': 'app/css/main.scss'
-          }
+        files: {
+          'public/css/main.css': 'app/styles/main.scss'
+        }
       }
-  },
-     watch: {
+    },
+    usemin: {
+      html: ['public/**/*.html']
+    },
+    useminPrepare: {
+      html: ['piblic/index.html'],
+
+      options: {
+        dest: 'public',
+        root: 'app'
+      }
+    },
+    watch: {
       other: {
         files: ['app/**', '!app/**/*.jade', '!app/**/*.{sass,scss}'],
         tasks: ['copy']
@@ -39,12 +64,19 @@ module.exports = function(grunt) {
       },
       sass: {
         files: ['app/**/*.{sass,scss}'],
-        tasks: ['sass']
+        tasks: ['sass', 'autoprefixer']
       }
-    }
-});
+    },
 
-  grunt.registerTask('default', ['']);
-  grunt.registerTask('build', ['clean','copy', 'jade', 'sass']);
-  grunt.registerTask('watch', ['build']);
+    wiredep: {
+      build: {
+        src: ['public/**/*.html']
+      }
+
+    }
+  });
+
+  grunt.registerTask('default', []);
+  grunt.registerTask('build', ['clean', 'copy', 'jade', 'sass', 'autoprefixer', 'wiredep']);
+  grunt.registerTask('serve', ['build', 'watch']);
 };
